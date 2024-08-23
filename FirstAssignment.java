@@ -8,8 +8,8 @@
  *	To compile MS Powershell:	javac -cp ".;mvAcm.jar" FirstAssignment.java
  *	To execute MS Powershell:	java -cp ".;mvAcm.jar" FirstAssignment
  *
- *	@author	Your name
- *	@since	Today's date
+ *	@author	Yoosuf Khan
+ *	@since August 23, 2024
  */
 import java.awt.Font;
 
@@ -17,7 +17,6 @@ import acm.program.GraphicsProgram;
 import acm.graphics.GLabel;
 
 public class FirstAssignment extends GraphicsProgram {
-    
     public void run() {
     	//	The font to be used
     	Font f = new Font("Serif", Font.BOLD, 18);
@@ -53,27 +52,24 @@ public class FirstAssignment extends GraphicsProgram {
     	GLabel s10 = new GLabel("The windows. I liked feeling the wind in my hair. We even recorded some videos outside of", 10, 200);
     	s10.setFont(f);
     	add(s10);
-    	GLabel s11 = new GLabel("the window. ", 10, 220);
+    	GLabel s11 = new GLabel("the window. At the train station there was a decommissioned steam train that used to travel", 10, 220);
     	s11.setFont(f);
     	add(s11);
-    	GLabel s12 = new GLabel("", 10, 240);
+    	GLabel s12 = new GLabel("on the railway but now it just sits at the station. We went to many restaurants at the ", 10, 240);
     	s12.setFont(f);
     	add(s12);
-    	GLabel s13 = new GLabel("", 10, 260);
+    	GLabel s13 = new GLabel("mountain town. After that trip we went back to the flat. The drive took around one hour.", 10, 260);
     	s13.setFont(f);
     	add(s13);
-    	GLabel s14 = new GLabel("", 10, 280);
+    	GLabel s14 = new GLabel("Swiftly after that trip we went to the airport to get home. We waved goodbye to our ", 10, 280);
     	s14.setFont(f);
     	add(s14);
-    	GLabel s15 = new GLabel("", 10, 300);
+    	GLabel s15 = new GLabel("grandparents. We got back to America in early July and then we just stayed at home for the", 10, 300);
     	s15.setFont(f);
     	add(s15);
-    	GLabel s16 = new GLabel("", 10, 320);
+    	GLabel s16 = new GLabel("rest of summer vacation. Overall, this summer vacation was very enjoyable to experience.", 10, 320);
     	s16.setFont(f);
     	add(s16);
-    	    	
-    	//	Continue adding lines until you have 12 to 15 lines
-    	
     }
     
 }
