@@ -29,7 +29,7 @@ public class PigGame {
 							+ "turn goes to other player");
 		System.out.println("\n");
 	}
-	public void run (){
+	public void playGame (){
 		Dice dice = new Dice();
 		int playerAmt=0, compAmt=0, turnScore=0;
 		char choice='b';
@@ -95,15 +95,55 @@ public class PigGame {
 		}
 		if(playerAmt>compAmt){
 		System.out.println("Congratulations!!! YOU WON!!!!");
-		System.out.println("\nThanks for playing the Pig Game!!!");
 		}
 		else{
-			System.out.println("you lost 😩😭😢😡");
+			System.out.println("Too bad. COMPUTER WON.");
 		}
+		System.out.println("\nThanks for playing the Pig Game!!!");
+	}
+	public void runStatistics(){
+		Dice dice = new Dice();
+		int turns;
+		int [] scorePercent =new  int [26];
+		int turnScore =0;
+		dice.roll();
+		for(int i =0; i<scorePercent.length;i++){
+			scorePercent[i]=0;
+		}
+		System.out.println("\nRun statistical analysis - \"Hold at 20\"\n");
+		turns = Prompt.getInt("Number of turns (1000 - 10000000)",1000,10000000);
+		for(int i =0; i<turns; i++){
+			while((turnScore<20&&dice.getValue()!=1)||turnScore==0){
+				if(turnScore<20){
+					dice.roll();
+					turnScore+=dice.getValue();
+				}
+				
+				
+			}
+			if(turnScore<20) 
+				turnScore=0;
+			//System.out.println(turnScore);
+			scorePercent[turnScore]++;
+			turnScore=0;
+		}
+		System.out.printf("%-10s%s%n","Score","Estimated Probability");
+		System.out.printf("%-10d%.6f%n",0,((double)scorePercent[0]/turns));
+		System.out.printf("%-10d%.6f%n",20,((double)scorePercent[20]/turns));
+		System.out.printf("%-10d%.6f%n",21,((double)scorePercent[21]/turns));
+		System.out.printf("%-10d%.6f%n",22,((double)scorePercent[22]/turns));
+		System.out.printf("%-10d%.6f%n",23,((double)scorePercent[23]/turns));
+		System.out.printf("%-10d%.6f%n",24,((double)scorePercent[24]/turns));
+		System.out.printf("%-10d%.6f%n",25,((double)scorePercent[25]/turns));
 	}
 	public static void main (String args[]){
 		PigGame pg=new PigGame();
-		pg.run();
+		pg.printIntroduction();
+		char choice = Prompt.getChar("Play game or Statistics (p or s)");
+		if(choice=='p')
+			pg.playGame();
+		else
+			pg.runStatistics();
 	}
 	
 }
