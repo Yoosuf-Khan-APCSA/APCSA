@@ -35,47 +35,70 @@ public class PigGame {
 		char choice='b';
 		dice.roll();
 		printIntroduction();
-		while (compAmt<=100){
-			
-			
-			while(turnScore==0 ||(dice.getValue()!=1&&choice!='h')){
-				System.out.println("**** USER Turn ***");
+		while (compAmt<=100&&playerAmt<=100){
+			System.out.println("**** USER Turn ***");
 				System.out.println("\nYour turn score: " + turnScore);
 				System.out.println("Your total score: " + playerAmt);
+			
+			while(turnScore==0 ||(dice.getValue()!=1&&choice!='h')){
 				System.out.println();
-				choice=Prompt.getChar("(r)oll or (h)old -> ");
+				choice=Prompt.getChar("(r)oll or (h)old");
 				if(choice=='r'){
 					dice.roll();
-					System.out.println("Your roll: ");
+					System.out.println("\nYour roll: ");
 					dice.printDice();
 					turnScore+=dice.getValue();
+					System.out.println("\nYour turn score: " + turnScore);
+					System.out.println("Your total score: " + playerAmt);
+					System.out.println();
 				}
 				else{
 					playerAmt+= turnScore;
-					System.out.println("Your total score: " + playerAmt);
+					System.out.println("\nYour total score: " + playerAmt);
 				}
 			}
 			turnScore=0;
-			while((turnScore<20||dice.getValue()!=1)||turnScore==0){
-				Prompt.getString("Press enter for computer's turn ->");
-				System.out.println("**** COMPUTER'S Turn ***");
+			if(playerAmt<100){
+				System.out.println("\n**** COMPUTER'S Turn ***");
 				System.out.println("\nComputer's turn score: " + turnScore);
-				System.out.println("Computer's total score: " + playerAmt);
-				System.out.println();
+				System.out.println("Computer's total score: " + compAmt);
+			while((turnScore<20&&dice.getValue()!=1)||turnScore==0){
+				Prompt.getString("\nPress enter for computer's turn\n");
+				
 				if(turnScore<20&&compAmt<100){
 					dice.roll();
-					System.out.println("Computer will roll: ");
+					System.out.println("Computer will ROLL");
 					dice.printDice();
 					turnScore+=dice.getValue();
+					System.out.println("\nComputer's turn score: " + turnScore);
+					System.out.println("Computer's total score: " + compAmt);
+					System.out.println();
 				}
-				else{
+				if(turnScore>=20&&compAmt<=100){
 					compAmt+= turnScore;
-					System.out.println("Your total score: " + playerAmt);
+					System.out.println("Computer will HOLD");
+					System.out.println("Computer's total score: " + compAmt);
 				}
-				
+				else if ((compAmt+turnScore)>=100){
+					compAmt+= turnScore;
+					System.out.println("Computer will HOLD");
+					System.out.println("Computer's total score: " + compAmt);
+				}
+				// if(turnScore<20){
+				// 	compAmt+= turnScore;
+				// 	System.out.println("Computer's total score: " + CompAmt);
+				// }
+			}
 			}
 			turnScore=0;
 			
+		}
+		if(playerAmt>compAmt){
+		System.out.println("Congratulations!!! YOU WON!!!!");
+		System.out.println("\nThanks for playing the Pig Game!!!");
+		}
+		else{
+			System.out.println("you lost 😩😭😢😡");
 		}
 	}
 	public static void main (String args[]){
