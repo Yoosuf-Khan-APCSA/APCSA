@@ -9,7 +9,11 @@
 public class HTMLUtilities {
 
     char[] punctuation = new char[]{'.', ',', ';', ':', '(', ')', '?', '!', '=', '&', '~', '+', '-'};
-
+	//NONE = not nested in a block, COMMENT = inside a comment block
+	// PREFORMAT = inside a pre-format block
+	private enum TokenState { NONE, COMMENT, PREFORMAT };
+	// the current tokenizer state
+	private TokenState state=NONE;
     /**
      * Break the HTML string into tokens. The array returned is exactly the size
      * of the number of tokens in the HTML string. Example:	HTML string =
@@ -20,21 +24,45 @@ public class HTMLUtilities {
      * @return	the String array of tokens
      */
     public String[] tokenizeHTMLString(String str) {
+		state = NONE;
         // make the size of the array large to start
         String[] result = new String[10000];
         String[] sizedResult;
         int currentTokenNum = 0;
         String tokenTemp = "";
         for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == '<') {
+			if(state==COMMENT){
+				if(str.contains("-->")){
+					i=str.indexOF('>',i);
+					state=NONE;
+				}
+			}
+			else if(state==PREFORMAT){
+				if(str.equals("</pre>")){
+					state=NONE;
+				}
+					result[currentTokenNum] = str;
+					currentTokenNum++;
+			}
+            else if (str.charAt(i) == '<') {
 				if(tokenTemp.trim().length()>0){
 						result[currentTokenNum] = tokenTemp;
 						currentTokenNum++;
 						tokenTemp = "";
-					}
-                result[currentTokenNum] = str.substring(i, 1 + str.indexOf('>', i));
-                currentTokenNum++;
-                i = str.indexOf('>', i) ;
+				}
+				tokenTemp=str.substring(i, 1 + str.indexOf('>', i));
+				if(tokenTemp.equals("<pre>")){
+					state=PREFORMAT;
+					result[currentTokenNum] = str;
+					currentTokenNum++;
+				}
+				else if(tokenTemp.equals("<!--")) state=COMMENT;
+				else{
+					result[currentTokenNum] = str.substring(i, 1 + str.indexOf('>', i));
+					currentTokenNum++;
+					i = str.indexOf('>', i) ;
+				}
+                tokenTemp = "";
             }
 			
             else if (str.charAt(i) == ' ' || isPunctuation(str.charAt(i))) {
