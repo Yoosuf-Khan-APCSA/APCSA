@@ -130,6 +130,7 @@ public class IntArrayWorker
     return total;
    }
   public void reverseRows(){
+	System.out.println("Array before reverseRows:\n");
     for (int[] rowArray : matrix)
     {
       for (int item : rowArray)
@@ -145,6 +146,8 @@ public class IntArrayWorker
         matrix[i][matrix[i].length-j-1]=temp;
       }
     }
+	System.out.println("Array after reverseRows:\n");
+
     for (int[] rowArray : matrix)
     {
       for (int item : rowArray)
