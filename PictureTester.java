@@ -74,7 +74,22 @@ public class PictureTester
     swan.edgeDetection(20);
     swan.explore();
   }
-  
+  /** Method to test pixelate */
+  public static void testPixelate()
+  {
+    Picture swan = new Picture("images/swan.jpg");
+    swan.explore();
+    swan.pixelate(20);
+    swan.explore();
+  }
+  /** Method to test blur */
+  public static void testBlur()
+  {
+    Picture swan = new Picture("images/swan.jpg");
+    swan.explore();
+    swan.blur(20);
+    swan.explore();
+  }
   /** Main method for testing.  Every class can have a main
     * method in Java */
   public static void main(String[] args)
@@ -83,11 +98,14 @@ public class PictureTester
     // and comment out the ones you don't want
     // to run
     //testZeroBlue();
-    testKeepOnlyBlue();
+    //testKeepOnlyBlue();
     //testKeepOnlyRed();
     //testKeepOnlyGreen();
-    testNegate();
-    testGrayscale();
+    //testNegate();
+    //testGrayscale();
+    testBlur();
+    //testPixelate();
+    //testEnhance();
     //testFixUnderwater();
     //testMirrorVertical();
     //testMirrorTemple();

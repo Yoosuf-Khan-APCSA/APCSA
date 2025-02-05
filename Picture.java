@@ -84,7 +84,106 @@ public class Picture extends SimplePicture
     return output;
     
   }
-  
+  /** To pixelate by dividing area into size x size.
+	* @param size Side length of square area to pixelate.
+	*/
+	public void pixelate(int size) {
+		Pixel[][] pixels = this.getPixels2D();
+		int pixelAmt=0;
+		int blueAvg=0,redAvg=0,greenAvg=0;
+		for(int i = 0; i<(pixels[0].length/size);i++){
+			for(int j = 0; j<(pixels.length/size);j++){
+				for(int k = 0; k<size;k++){
+					for(int l = 0; l<size;l++){
+						if((i*size+k)<pixels[0].length-1&&(j*size+l)<pixels.length-1){
+							blueAvg+=pixels[j*size+l][i*size+k].getBlue();
+							redAvg+=pixels[j*size+l][i*size+k].getRed();
+							greenAvg+=pixels[j*size+l][i*size+k].getGreen();
+							pixelAmt++;
+						}
+					}
+				}
+				if(pixelAmt>0){
+					blueAvg=blueAvg/pixelAmt;
+					greenAvg=greenAvg/pixelAmt;
+					redAvg=redAvg/pixelAmt;
+					for(int k = 0; k<size;k++){
+						for(int l = 0; l<size;l++){
+							if(i*size+k<pixels[0].length&&j*size+l<pixels.length){
+								pixels[j*size+l][i*size+k].setGreen(greenAvg);
+								pixels[j*size+l][i*size+k].setRed(redAvg);
+								pixels[j*size+l][i*size+k].setBlue(blueAvg);
+							}
+						}
+					}
+				}
+				pixelAmt=0;
+				blueAvg=0;
+				greenAvg=0;
+				redAvg=0;
+			}
+		}
+	}
+	/** Method that blurs the picture
+	* @param size Blur size, greater is more blur
+	* @return Blurred picture
+	*/
+	public Picture blur(int size)
+	{
+		Pixel[][] pixels = this.getPixels2D();
+		Picture result = new Picture(pixels.length, pixels[0].length);
+		Pixel[][] resultPixels = result.getPixels2D();
+		int pixelAmt=0;
+		int blueAvg=0,redAvg=0,greenAvg=0;
+		for(int i = 0; i<(pixels[0].length);i++){
+			for(int j = 0; j<(pixels.length);j++){
+				for(int k = -size/2; k<size/2+1;k++){
+					for(int l = -size/2; l<size/2+1;l++){
+						if((k)<pixels[0].length-1&&(l)<pixels.length-1&&(k)>=0&&(l)>=0){
+							blueAvg+=pixels[j+l][i+k].getBlue();
+							redAvg+=pixels[j+l][i+k].getRed();
+							greenAvg+=pixels[j+l][i+k].getGreen();
+							pixelAmt++;
+						}
+					}
+				}
+				if(pixelAmt>0){
+					blueAvg=blueAvg/pixelAmt;
+					greenAvg=greenAvg/pixelAmt;
+					redAvg=redAvg/pixelAmt;
+					if((i)<pixels[0].length-1&&(j)<pixels.length-1&&(i)>=0&&(j)>=0){
+						pixels[i][j].setGreen(greenAvg);
+						pixels[i][j].setRed(redAvg);
+						pixels[i][j].setBlue(blueAvg);
+					}
+					
+				}
+				pixelAmt=0;
+				blueAvg=0;
+				greenAvg=0;
+				redAvg=0;
+			}
+		}
+		return result;
+	}
+	/** Method that enhances a picture by getting average Color around
+	* a pixel then applies the following formula:
+	*
+	* pixelColor <- 2 * currentValue - averageValue
+	*
+	* size is the area to sample for blur.
+	*
+	* @param size Larger means more area to average around pixel
+	* and longer compute time.
+	* @return enhanced picture
+	*/
+	public Picture enhance(int size)
+	{
+		Pixel[][] pixels = this.getPixels2D();
+		Picture result = new Picture(pixels.length, pixels[0].length);
+		Pixel[][] resultPixels = result.getPixels2D();
+		return result;
+	}
   /** Method to set the blue to 0 */
   public void zeroBlue()
   {
