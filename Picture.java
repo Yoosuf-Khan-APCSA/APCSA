@@ -1,10 +1,6 @@
+
 import java.awt.*;
-import java.awt.font.*;
-import java.awt.geom.*;
 import java.awt.image.BufferedImage;
-import java.text.*;
-import java.util.*;
-import java.util.List; // resolves problem with java.awt.List and java.util.List
 
 /**
  * A class that represents a picture.  This class inherits from 
@@ -84,6 +80,59 @@ public class Picture extends SimplePicture
     return output;
     
   }
+
+
+  /** To average pixel area of size x size.
+	* @param size Side length of square area to pixelate.
+  * @param Pixels[][] array of pixels
+  * @return Color of average
+	*/
+  public Color avgPixels(Pixel[][] pixels, int size,int x,int y) {
+    int pixelAmt=0;
+		int blueAvg=0,redAvg=0,greenAvg=0;
+    for(int k = -size/2; k<size/2+1&&(y+k)<pixels.length-2;k++){
+					for(int l = -size/2; l<size/2+1&&(x+l)<pixels[0].length-2;l++){
+            
+						if((k+y)<pixels.length-1&&(l+x)<pixels[0].length-1&&(k+y)>=0&&(l+x)>=0){
+              try {
+                  blueAvg+=pixels[y+k][x+l].getBlue();
+                  blueAvg-=pixels[y+k][x+l].getBlue();
+                }
+                catch(Exception e) {
+                  System.err.println((y+k)+" "+(x+l));
+                  //System.err.println((k+y)<pixels[0].length-1);
+                }
+							blueAvg+=pixels[y+k][x+l].getBlue();
+							redAvg+=pixels[y+k][x+l].getRed();
+							greenAvg+=pixels[y+k][x+l].getGreen();
+							pixelAmt++;
+						}
+					}
+          //System.out.println("x:"+x+"y:"+y+"k:"+k+"Leng"+(pixels[0].length-1));
+				}
+        if(pixelAmt>0){
+					blueAvg=blueAvg/pixelAmt;
+					greenAvg=greenAvg/pixelAmt;
+					redAvg=redAvg/pixelAmt;
+        }
+      return new Color(redAvg,greenAvg,blueAvg);
+  }
+
+/** 
+/** To average pixel area of size x size.
+	* @param size Side length of square area to pixelate.
+  * @param Pixels[][] array of pixels
+  * @return Color of average
+	/
+  public Color avgPixels(Pixel[][] pixels, int size,int x,int y) {
+    int pixelAmt=0;
+		int blueAvg=0,redAvg=0,greenAvg=0;
+
+
+    return new Color(redAvg,greenAvg,blueAvg);
+  }
+  */
+
   /** To pixelate by dividing area into size x size.
 	* @param size Side length of square area to pixelate.
 	*/
@@ -134,34 +183,11 @@ public class Picture extends SimplePicture
 		Picture result = new Picture(pixels.length, pixels[0].length);
 		Pixel[][] resultPixels = result.getPixels2D();
 		int pixelAmt=0;
-		int blueAvg=0,redAvg=0,greenAvg=0;
 		for(int i = 0; i<(pixels[0].length);i++){
 			for(int j = 0; j<(pixels.length);j++){
-				for(int k = -size/2; k<size/2+1;k++){
-					for(int l = -size/2; l<size/2+1;l++){
-						if((k)<pixels[0].length-1&&(l)<pixels.length-1&&(k)>=0&&(l)>=0){
-							blueAvg+=pixels[j+l][i+k].getBlue();
-							redAvg+=pixels[j+l][i+k].getRed();
-							greenAvg+=pixels[j+l][i+k].getGreen();
-							pixelAmt++;
-						}
-					}
+				if((i)<pixels[0].length-1&&(j)<pixels.length-1&&(i)>=0&&(j)>=0){
+					resultPixels[j][i].setColor(avgPixels(pixels,size,i,j));
 				}
-				if(pixelAmt>0){
-					blueAvg=blueAvg/pixelAmt;
-					greenAvg=greenAvg/pixelAmt;
-					redAvg=redAvg/pixelAmt;
-					if((i)<pixels[0].length-1&&(j)<pixels.length-1&&(i)>=0&&(j)>=0){
-						pixels[i][j].setGreen(greenAvg);
-						pixels[i][j].setRed(redAvg);
-						pixels[i][j].setBlue(blueAvg);
-					}
-					
-				}
-				pixelAmt=0;
-				blueAvg=0;
-				greenAvg=0;
-				redAvg=0;
 			}
 		}
 		return result;
@@ -182,6 +208,18 @@ public class Picture extends SimplePicture
 		Pixel[][] pixels = this.getPixels2D();
 		Picture result = new Picture(pixels.length, pixels[0].length);
 		Pixel[][] resultPixels = result.getPixels2D();
+		int pixelAmt=0;
+    Color avgColor;
+		for(int i = 0; i<(pixels[0].length);i++){
+			for(int j = 0; j<(pixels.length);j++){
+				if((i)<pixels[0].length-1&&(j)<pixels.length-1&&(i)>=0&&(j)>=0){
+          avgColor=avgPixels(pixels,size,i,j);
+					resultPixels[j][i].setRed(2*pixels[j][i].getRed()-avgColor.getRed());
+          resultPixels[j][i].setGreen(2*pixels[j][i].getGreen()-avgColor.getGreen());
+          resultPixels[j][i].setBlue(2*pixels[j][i].getBlue()-avgColor.getBlue());
+				}
+			}
+		}
 		return result;
 	}
   /** Method to set the blue to 0 */

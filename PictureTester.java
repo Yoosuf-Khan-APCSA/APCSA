@@ -87,8 +87,16 @@ public class PictureTester
   {
     Picture swan = new Picture("images/swan.jpg");
     swan.explore();
-    swan.blur(20);
+    swan.blur(11).explore();
+    
+  }
+  /** Method to test enhance */
+  public static void testEnhance()
+  {
+    Picture swan = new Picture("images/water.jpg");
     swan.explore();
+    swan.enhance(100).explore();
+    
   }
   /** Main method for testing.  Every class can have a main
     * method in Java */
@@ -103,9 +111,9 @@ public class PictureTester
     //testKeepOnlyGreen();
     //testNegate();
     //testGrayscale();
-    testBlur();
+    //testBlur();
     //testPixelate();
-    //testEnhance();
+    testEnhance();
     //testFixUnderwater();
     //testMirrorVertical();
     //testMirrorTemple();
