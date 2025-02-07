@@ -81,7 +81,68 @@ public class Picture extends SimplePicture
     
   }
 
+public 	Picture swapLeftRight()	 {
+  Pixel[][] pixels = this.getPixels2D();
+	Picture result = new Picture(pixels.length, pixels[0].length);
+	Pixel[][] resultPixels = result.getPixels2D();
 
+  for(int i=0; i<pixels[0].length;i++){
+    for(int j=0; j<pixels.length;j++){
+      resultPixels[j][(i+pixels[0].length/2)%pixels[0].length].setColor(pixels[j][i].getColor());
+    }
+  }
+  return result;
+}
+ /* <Description here>
+ * @param shiftCount The number of pixels to shift to the right
+ * @param steps The number of steps
+ * @return The picture with pixels shifted in stair steps
+ */
+ public Picture stairStep(int shiftCount, int steps){
+  Pixel[][] pixels = this.getPixels2D();
+	Picture result = new Picture(pixels.length, pixels[0].length);
+	Pixel[][] resultPixels = result.getPixels2D();
+  for(int i=0; i<pixels[0].length;i++){
+    for(int j=0; j<pixels.length;j++){
+      resultPixels[j][(i+(j/steps)*shiftCount)%pixels[0].length].setColor(pixels[j][i].getColor());
+    }
+  }
+  return result;
+ }
+ /* <Description here>
+ * @param maxFactor Max height (shift) of curve in pixels
+ * @return Liquified picture
+ */
+ public Picture liquify(int maxHeight) {
+  Pixel[][] pixels = this.getPixels2D();
+	Picture result = new Picture(pixels.length, pixels[0].length);
+	Pixel[][] resultPixels = result.getPixels2D();
+  for(int i=0; i<pixels[0].length;i++){
+    for(int j=0; j<pixels.length;j++){
+      double exponent = Math.pow(j - pixels.length / 2.0, 2) / (2.0 * Math.pow(100, 2));
+      int rightShift = (int)(maxHeight * Math.exp(- exponent));
+      resultPixels[j][(i+rightShift)%pixels[0].length].setColor(pixels[j][i].getColor());
+    }
+  }
+  return result;
+ }
+ /* <Description here>
+ * @param amplitude The maximum shift of pixels
+ * @return Wavy picture
+ */
+ public Picture wavy(int amplitude){
+  Pixel[][] pixels = this.getPixels2D();
+	Picture result = new Picture(pixels.length, pixels[0].length);
+	Pixel[][] resultPixels = result.getPixels2D();
+  for(int i=0; i<pixels[0].length;i++){
+    for(int j=0; j<pixels.length;j++){
+      int rightShift = (int)(amplitude*Math.sin(2*Math.PI*.01*j+2))%pixels[0].length;
+      if (rightShift<0) rightShift+=pixels[0].length;
+      resultPixels[j][(i+rightShift)%pixels[0].length].setColor(pixels[j][i].getColor());
+    }
+  }
+  return result;
+ }
   /** To average pixel area of size x size.
 	* @param size Side length of square area to pixelate.
   * @param Pixels[][] array of pixels
@@ -118,20 +179,7 @@ public class Picture extends SimplePicture
       return new Color(redAvg,greenAvg,blueAvg);
   }
 
-/** 
-/** To average pixel area of size x size.
-	* @param size Side length of square area to pixelate.
-  * @param Pixels[][] array of pixels
-  * @return Color of average
-	/
-  public Color avgPixels(Pixel[][] pixels, int size,int x,int y) {
-    int pixelAmt=0;
-		int blueAvg=0,redAvg=0,greenAvg=0;
 
-
-    return new Color(redAvg,greenAvg,blueAvg);
-  }
-  */
 
   /** To pixelate by dividing area into size x size.
 	* @param size Side length of square area to pixelate.

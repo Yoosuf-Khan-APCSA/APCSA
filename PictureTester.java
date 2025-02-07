@@ -90,6 +90,39 @@ public class PictureTester
     swan.blur(11).explore();
     
   }
+  /** Method to test swapLeftRight */
+  public static void testSwapLeftRight()
+  {
+    Picture swan = new Picture("images/swan.jpg");
+    swan.explore();
+    swan.swapLeftRight().explore();
+    
+  }
+
+  /** Method to test stairStep */
+  public static void testStairStep()
+  {
+    Picture swan = new Picture("images/swan.jpg");
+    swan.explore();
+    swan.stairStep(1,1).explore();
+    
+  }
+  /** Method to test liquify */
+  public static void testLiquify()
+  {
+    Picture swan = new Picture("images/swan.jpg");
+    swan.explore();
+    swan.liquify(100).explore();
+    
+  }
+  /** Method to test liquify */
+  public static void testWavy()
+  {
+    Picture swan = new Picture("images/swan.jpg");
+    swan.explore();
+    swan.wavy(30).explore();
+    
+  }
   /** Method to test enhance */
   public static void testEnhance()
   {
@@ -113,7 +146,11 @@ public class PictureTester
     //testGrayscale();
     //testBlur();
     //testPixelate();
-    testEnhance();
+    //testEnhance();
+    //testSwapLeftRight();
+    //testStairStep();
+    //testLiquify();
+    testWavy();
     //testFixUnderwater();
     //testMirrorVertical();
     //testMirrorTemple();
