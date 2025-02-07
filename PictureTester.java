@@ -104,7 +104,7 @@ public class PictureTester
   {
     Picture swan = new Picture("images/swan.jpg");
     swan.explore();
-    swan.stairStep(1,1).explore();
+    swan.stairStep(10,3).explore();
     
   }
   /** Method to test liquify */
@@ -148,7 +148,7 @@ public class PictureTester
     //testPixelate();
     //testEnhance();
     //testSwapLeftRight();
-    //testStairStep();
+    testStairStep();
     //testLiquify();
     testWavy();
     //testFixUnderwater();

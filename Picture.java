@@ -102,9 +102,17 @@ public 	Picture swapLeftRight()	 {
   Pixel[][] pixels = this.getPixels2D();
 	Picture result = new Picture(pixels.length, pixels[0].length);
 	Pixel[][] resultPixels = result.getPixels2D();
+	int remainderStep=0;
+	int stepSize=pixels.length/steps;
+	if(pixels.length%steps>0)
+		 remainderStep=pixels.length/(pixels.length%steps);
   for(int i=0; i<pixels[0].length;i++){
     for(int j=0; j<pixels.length;j++){
-      resultPixels[j][(i+(j/steps)*shiftCount)%pixels[0].length].setColor(pixels[j][i].getColor());
+		if(remainderStep!=0&&j%remainderStep==0){
+		      resultPixels[j][(i+(j/stepSize)*(shiftCount+1))%pixels[0].length].setColor(pixels[j][i].getColor());
+		}
+		else
+			resultPixels[j][(i+(j/stepSize)*shiftCount)%pixels[0].length].setColor(pixels[j][i].getColor());
     }
   }
   return result;
