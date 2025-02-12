@@ -74,6 +74,13 @@ public class PictureTester
     swan.edgeDetection(20);
     swan.explore();
   }
+  /** Method to test edgeDetectionBelow */
+  public static void testEdgeDetectionBelow()
+  {
+    Picture swan = new Picture("images/swan.jpg");
+    swan.explore();
+    swan.edgeDetectionBelow(20).explore();
+  }
   /** Method to test pixelate */
   public static void testPixelate()
   {
@@ -107,6 +114,14 @@ public class PictureTester
     swan.stairStep(10,3).explore();
     
   }
+	  /** Method to test greenScreen */
+	public static void testGreenScreen()
+	{
+		// choose any picture to start since it will *not* be used
+		Picture pic = new Picture("images/beach.jpg");
+		Picture gScreen = pic.greenScreen();
+		gScreen.explore();
+	}
   /** Method to test liquify */
   public static void testLiquify()
   {
@@ -148,9 +163,11 @@ public class PictureTester
     //testPixelate();
     //testEnhance();
     //testSwapLeftRight();
-    testStairStep();
+    //testEdgeDetectionBelow();
+    testGreenScreen();
+    //testStairStep();
     //testLiquify();
-    testWavy();
+    //testWavy();
     //testFixUnderwater();
     //testMirrorVertical();
     //testMirrorTemple();

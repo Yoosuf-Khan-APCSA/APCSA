@@ -80,7 +80,61 @@ public class Picture extends SimplePicture
     return output;
     
   }
-
+	/** Method that creates an edge detected black/white picture
+	* @param threshold threshold as determined by Pixel’s colorDistance method
+	* @return edge detected picture
+	*/
+	public Picture edgeDetectionBelow(int threshold)
+	{
+		Pixel[][] pixels = this.getPixels2D();
+		Picture result = new Picture(pixels.length, pixels[0].length);
+		Pixel[][] resultPixels = result.getPixels2D();
+		Pixel topPixel = null;
+		Pixel bottomPixel = null;
+		Color bottomColor = null;
+		for (int row = 0; row < pixels.length-1; row++)
+		{
+		  for (int col = 0; 
+			   col < pixels[0].length; col++)
+		  {
+			topPixel = pixels[row][col];
+			bottomPixel = pixels[row+1][col];
+			bottomColor = bottomPixel.getColor();
+			if (topPixel.colorDistance(bottomColor) > 
+				threshold)
+			  resultPixels[row][col].setColor(Color.BLACK);
+			else
+			   resultPixels[row][col].setColor(Color.WHITE);
+		  }
+		} 
+		return result;
+	}
+	/** Method that creates a green screen picture
+	* @return green screen picture
+	*/
+	
+	public Picture greenScreen()
+	{
+		// Get background picture
+		Picture bkgnd = new Picture("greenScreenImages/IndoorHouseLibraryBackground.jpg");
+		Pixel[][] bkgndPixels = bkgnd.getPixels2D();
+		// Get cat picture
+		Picture cat = new Picture("greenScreenImages/kitten1GreenScreen.jpg");
+		Pixel[][] catPixels = cat.getPixels2D();
+		// Get mouse picture
+		Picture mouse = new Picture("greenScreenImages/mouse1GreenScreen.jpg");
+		Pixel[][] mousePixels = mouse.getPixels2D();
+		for(int r=0; r<catPixels.length;r++){
+			for(int c=0; c<catPixels[0].length;c++){
+				if (catPixels[r][c].colorDistance(new Color(50,205,50)) > 5)
+					bkgndPixels[(r/2)+200][(c/2)+200].setColor(catPixels[r][c].getColor());
+			}
+		}
+		 return bkgnd;
+		
+		
+	}
+	
 public 	Picture swapLeftRight()	 {
   Pixel[][] pixels = this.getPixels2D();
 	Picture result = new Picture(pixels.length, pixels[0].length);
