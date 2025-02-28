@@ -69,6 +69,7 @@ public class SimpleCalc {
 			case "-": 
 			case "+":
 			case "^":
+			case "%":
 				return 'o';
 			default:
 				return 'a';
