@@ -14,7 +14,9 @@ import java.util.EmptyStackException;
 	public ArrayStack(){
 		theStack = new ArrayList<E>();
 	}
-	
+	public List<E> get(){
+		return theStack;
+	}
 	/** @return		true if the stack is empty; false if otherwise */
 	public boolean isEmpty(){ return theStack.isEmpty();	}
 	
