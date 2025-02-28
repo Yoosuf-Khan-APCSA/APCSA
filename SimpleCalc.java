@@ -40,9 +40,11 @@ public class SimpleCalc {
 		String equation="";
 		while(!equation.equals("q")){
 			equation = Prompt.getString("");
+			List<String> numList=utils.tokenizeExpression(equation);
 			if (equation.equals("q"));
 			else if(equation.equals("h")) printHelp();
-			else System.out.printf("%.2f%n",evaluateExpression(utils.tokenizeExpression(equation)));
+			else if(hasCorrectSyntax(numList))
+			System.out.printf("%.2f%n",evaluateExpression(numList));
 		}
 	}
 	
@@ -55,7 +57,68 @@ public class SimpleCalc {
 		System.out.println("  arithmetic operators +, -, *, /, %, ^");
 		System.out.println("  parentheses '(' and ')'");
 	}
-	
+	/**	checks syntax */
+	public char opOrNum(String str) {
+		if(Character.isDigit(str.charAt(0))||(str.length()>1&&Character.isDigit(str.charAt(1))))
+			return 'n';
+		switch (str){
+			case "(":
+			case ")": 
+			case "*": 
+			case "/": 
+			case "-": 
+			case "+":
+			case "^":
+				return 'o';
+			default:
+				return 'a';
+		}
+	}
+	/**	checks syntax */
+	public boolean hasCorrectSyntax(List<String> tokens) {
+		//for(String x:tokens) System.out.print(x+" ");
+		int unclosedParen =0;
+		for(int i=0; i<tokens.size();i++){
+			if(opOrNum(tokens.get(i))=='a') {
+				System.err.println("System ERROR: Letters present");
+				return false;
+			}
+			if(tokens.get(i).equals("(")) unclosedParen++;
+			if(tokens.get(i).equals(")")) unclosedParen--;
+			if(tokens.get(i).equals("-")&&((i==0&&opOrNum(tokens.get(i+1))=='n')||(i>0&&opOrNum(tokens.get(i-1))=='o'
+					&&!tokens.get(i-1).equals("(")&&!tokens.get(i-1).equals(")")))){
+				tokens.set(i+1,"-"+tokens.get(i+1));
+				tokens.remove(i);
+				if(i!=0) i--;
+			}
+			
+		}
+		if(unclosedParen!=0){
+			System.err.println("System ERROR: Improper Parenthesis Placement");
+			return false;
+		}
+		if(opOrNum(tokens.get(0))=='o'&&!(tokens.get(0).equals("-")||tokens.get(0).equals("("))){
+			System.err.println("System ERROR: Incorrect Start of Equation");
+			return false;
+		}
+		if(opOrNum(tokens.get(tokens.size()-1))=='o'&&!(tokens.get(tokens.size()-1).equals(")"))){
+			System.err.println("System ERROR: Incorrect End of Equation");
+			return false;
+		}
+		for(int i=1; i<tokens.size();i++){
+			String str1=tokens.get(i);
+			String str2=tokens.get(i-1);
+			if(opOrNum(str1)=='o'&&!str1.equals("(")&&!str1.equals(")")&&opOrNum(str2)=='o'&&!str2.equals("(")&&!str2.equals(")")){
+				System.err.println("System ERROR: Incorrect Operator Placement"+str1+" "+str2);
+				return false;
+			}
+			if(i>0&&str1.equals("(")&&(opOrNum(str2)=='n'||str2.equals(")")))
+				tokens.add(i+1,"*");
+		}
+		//System.out.println("");
+		//for(String x:tokens) System.out.print(x+" ");
+		return true;
+	}
 	/**
 	 *	Evaluate expression and return the value
 	 *	@param tokens	a List of String tokens making up an arithmetic expression
@@ -66,7 +129,7 @@ public class SimpleCalc {
 		valueStack=new ArrayStack<Double>();
 		operatorStack=new ArrayStack<String>();
 		for(int i=0; i<tokens.size(); i++){
-			/*
+			/**
 			for(double v:valueStack.get()) System.out.print(v+" ");
 			System.out.println();
 			for(String v:operatorStack.get()) System.out.print(v+" ");
