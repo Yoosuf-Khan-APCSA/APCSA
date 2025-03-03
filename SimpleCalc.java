@@ -1,5 +1,5 @@
-import java.util.List;		// used by expression evaluator
-
+import java.util.ArrayList;		// used by expression evaluator
+import java.util.List;
 /**
  *	Calculator for basic arithmetic Expressions can contain: integers or decimal numbers 
  *	arithmetic operators +, -, *, /, %, ^ parentheses '(' and ')'
@@ -13,12 +13,15 @@ public class SimpleCalc {
 	
 	private ArrayStack<Double> valueStack;		// value stack
 	private ArrayStack<String> operatorStack;	// operator stack
-
+	private ArrayList<Identifiers> vars;
 	// constructor	
 	public SimpleCalc() {
 		valueStack=new ArrayStack<Double>();
 		operatorStack=new ArrayStack<String>();
 		utils= new ExprUtils();
+		vars=new ArrayList<Identifiers>();
+		vars.add(new Identifiers("e",Math.E));
+		vars.add(new Identifiers("pi",Math.PI));
 	}
 	
 	public static void main(String[] args) {
@@ -41,10 +44,29 @@ public class SimpleCalc {
 		while(!equation.equals("q")){
 			equation = Prompt.getString("");
 			List<String> numList=utils.tokenizeExpression(equation);
+			
 			if (equation.equals("q"));
+			else if(equation.equals("l")){
+				System.out.println("Identifiers:");
+				for(Identifiers x:vars){
+					System.out.printf("%-10s = %.7f%n",x.getName(),x.getVal());
+				}
+			}
 			else if(equation.equals("h")) printHelp();
-			else if(hasCorrectSyntax(numList))
-			System.out.printf("%.2f%n",evaluateExpression(numList));
+			//else if(hasCorrectSyntax(numList))
+			else if(numList.size()>1&&numList.get(1).equals("=")){
+				String varName=numList.get(0);
+				numList.remove(0);
+				numList.remove(0);
+				if(hasCorrectSyntax(numList)){
+					vars.add(new Identifiers(varName,evaluateExpression(numList)));
+					System.out.printf("%-10s = %f%n",varName,evaluateExpression(numList));
+				}
+			}
+			else {
+				if(hasCorrectSyntax(numList))
+				System.out.printf("%f%n",evaluateExpression(numList));
+			}
 		}
 	}
 	
@@ -81,12 +103,15 @@ public class SimpleCalc {
 		int unclosedParen =0;
 		for(int i=0; i<tokens.size();i++){
 			if(opOrNum(tokens.get(i))=='a') {
-				System.err.println("System ERROR: Letters present");
-				return false;
+				for (Identifiers x : vars){
+					if(x.getName().equals(tokens.get(i)))
+						tokens.set(i,""+x.getVal());
+				}
+				if(opOrNum(tokens.get(i))=='a') tokens.set(i,""+0);
 			}
-			if(tokens.get(i).equals("(")) unclosedParen++;
-			if(tokens.get(i).equals(")")) unclosedParen--;
-			if(tokens.get(i).equals("-")&&((i==0&&opOrNum(tokens.get(i+1))=='n')||(i>0&&opOrNum(tokens.get(i-1))=='o'
+			else if(tokens.get(i).equals("(")) unclosedParen++;
+			else if(tokens.get(i).equals(")")) unclosedParen--;
+			else if(tokens.get(i).equals("-")&&((i==0&&opOrNum(tokens.get(i+1))=='n')||(i>0&&opOrNum(tokens.get(i-1))=='o'
 					&&!tokens.get(i-1).equals("(")&&!tokens.get(i-1).equals(")")))){
 				tokens.set(i+1,"-"+tokens.get(i+1));
 				tokens.remove(i);
@@ -126,6 +151,8 @@ public class SimpleCalc {
 	 *	@return			a double value of the evaluated expression
 	 */
 	public double evaluateExpression(List<String> tokens) {
+		if(tokens.size()==1) return Double.parseDouble(tokens.get(0));
+		
 		double value = 0;
 		valueStack=new ArrayStack<Double>();
 		operatorStack=new ArrayStack<String>();
