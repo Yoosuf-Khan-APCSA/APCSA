@@ -41,15 +41,25 @@ public class SimpleCalc {
 	 */
 	public void runCalc() {
 		String equation="";
+		boolean hasNumber =false;
 		while(!equation.equals("q")){
 			equation = Prompt.getString("");
 			List<String> numList=utils.tokenizeExpression(equation);
-			
+			if(equation.indexOf('=')!=-1)
+			for (int i=0;i<equation.indexOf('=');i++){
+				if(Character.isDigit(equation.charAt(i))){ hasNumber=true;
+						
+			}
+			if(hasNumber) System.out.println("0.0");
+			else{
+			for (String x : numList){
+				//System.out.println(x+" ");
+			}
 			if (equation.equals("q"));
 			else if(equation.equals("l")){
-				System.out.println("Identifiers:");
+				System.out.println("Variables:");
 				for(Identifiers x:vars){
-					System.out.printf("%-10s = %.7f%n",x.getName(),x.getVal());
+					System.out.printf("\t%-10s = %.7f%n",x.getName(),x.getVal());
 				}
 			}
 			else if(equation.equals("h")) printHelp();
@@ -58,9 +68,28 @@ public class SimpleCalc {
 				String varName=numList.get(0);
 				numList.remove(0);
 				numList.remove(0);
+				System.out.println("Help");
 				if(hasCorrectSyntax(numList)){
-					vars.add(new Identifiers(varName,evaluateExpression(numList)));
-					System.out.printf("%-10s = %f%n",varName,evaluateExpression(numList));
+					int repeatInd=-1;
+					
+					for (int j=0;j<varName.length();j++){
+						System.out.println(i+varName.charAt(i));
+						if(Character.isDigit(varName.charAt(i))){ hasNumber=true;
+						System.out.println(varName);
+						}
+					}
+						for( int x=0;x<vars.size();x++){
+							if(vars.get(x).getName().equals(varName)) repeatInd=x;
+						}
+						if(repeatInd==-1){
+							vars.add(new Identifiers(varName,evaluateExpression(numList)));
+							System.out.printf("%-10s = %f%n",varName,evaluateExpression(numList));
+						}
+						else {
+							vars.set(repeatInd,new Identifiers(varName,evaluateExpression(numList)));
+							System.out.printf("%-10s = %f%n",varName,evaluateExpression(numList));
+						}
+					
 				}
 			}
 			else {
@@ -69,6 +98,8 @@ public class SimpleCalc {
 			}
 		}
 	}
+	}
+}
 	
 	/**	Print help */
 	public void printHelp() {
@@ -112,7 +143,7 @@ public class SimpleCalc {
 			else if(tokens.get(i).equals("(")) unclosedParen++;
 			else if(tokens.get(i).equals(")")) unclosedParen--;
 			else if(tokens.get(i).equals("-")&&((i==0&&opOrNum(tokens.get(i+1))=='n')||(i>0&&opOrNum(tokens.get(i-1))=='o'
-					&&!tokens.get(i-1).equals("(")&&!tokens.get(i-1).equals(")")))){
+					&&!tokens.get(i-1).equals(")")))){
 				tokens.set(i+1,"-"+tokens.get(i+1));
 				tokens.remove(i);
 				if(i!=0) i--;
