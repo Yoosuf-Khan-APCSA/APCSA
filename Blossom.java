@@ -17,41 +17,54 @@
  * @author Yoosuf Khan
  */
 
+import info.gridworld.grid.Grid;
+import info.gridworld.grid.BoundedGrid;
+import info.gridworld.grid.Location;
+import info.gridworld.actor.ActorWorld;
+import info.gridworld.actor.Actor;
 import info.gridworld.actor.Bug;
+import info.gridworld.actor.Rock;
+import info.gridworld.actor.Flower;
+import java.awt.Color;
 
 /**
  * A <code>BoxBug</code> traces out a circle  of a given size. <br />
  * The implementation of this class is testable on the AP CS A and AB exams.
  */
-public class CircleBug extends Bug
+public class Blossom extends Flower
 {
-    private int steps;
-    private int sideLength;
+    
+    private int life;
+     private int step;
 
     /**
      * Constructs a circle bug that traces a circle of a given side length
      * @param length the side length
      */
-    public CircleBug(int length)
+    public Blossom(int length)
     {
-        steps = 0;
-        sideLength = length;
+        setColor(Color.green);
+        life = length;
     }
 
     /**
-     * Moves to the next location of the circle.
+     * Constructs a circle bug that traces a circle of a given side length
+     */
+    public Blossom()
+    {
+        setColor(Color.green);
+        life = 10;
+    }
+
+    
+     /**
+     * Causes the color of this flower to darken.
      */
     public void act()
     {
-        if (steps < sideLength && canMove())
-        {
-            move();
-            steps++;
-        }
-        else
-        {
-            turn();
-            steps = 0;
-        }
+        super.act();
+        step++;
+        if(step==life) removeSelfFromGrid();
+        
     }
 }

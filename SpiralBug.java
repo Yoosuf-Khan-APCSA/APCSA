@@ -20,26 +20,26 @@
 import info.gridworld.actor.Bug;
 
 /**
- * A <code>BoxBug</code> traces out a circle  of a given size. <br />
+ * A <code>BoxBug</code> traces out a spiral  of a given size. <br />
  * The implementation of this class is testable on the AP CS A and AB exams.
  */
-public class CircleBug extends Bug
+public class SpiralBug extends Bug
 {
     private int steps;
     private int sideLength;
 
     /**
-     * Constructs a circle bug that traces a circle of a given side length
+     * Constructs a spiral bug that traces a spiral of a given side length
      * @param length the side length
      */
-    public CircleBug(int length)
+    public SpiralBug()
     {
         steps = 0;
-        sideLength = length;
+        sideLength = 1;
     }
 
     /**
-     * Moves to the next location of the circle.
+     * Moves to the next location of the Spiral.
      */
     public void act()
     {
@@ -51,6 +51,8 @@ public class CircleBug extends Bug
         else
         {
             turn();
+            turn();
+            sideLength++;
             steps = 0;
         }
     }

@@ -20,37 +20,46 @@
 import info.gridworld.actor.Bug;
 
 /**
- * A <code>BoxBug</code> traces out a circle  of a given size. <br />
+ * A <code>BoxBug</code> traces out a Z of a given size. <br />
  * The implementation of this class is testable on the AP CS A and AB exams.
  */
-public class CircleBug extends Bug
+public class ZBug extends Bug
 {
     private int steps;
     private int sideLength;
+    private int turnNum;
 
     /**
-     * Constructs a circle bug that traces a circle of a given side length
+     * Constructs a box bug that traces a Z of a given side length
      * @param length the side length
      */
-    public CircleBug(int length)
+    public ZBug(int length)
     {
+        setDirection(90);
         steps = 0;
         sideLength = length;
+        turnNum=0;
     }
 
     /**
-     * Moves to the next location of the circle.
+     * Moves to the next location of the Z.
      */
     public void act()
     {
-        if (steps < sideLength && canMove())
+        if (steps < sideLength && canMove()&&turnNum<3)
         {
             move();
             steps++;
         }
-        else
+        else if(turnNum==0)
         {
-            turn();
+            setDirection(215);
+            turnNum++;
+            steps = 0;
+        }
+        else {
+            setDirection(90);
+            turnNum++;
             steps = 0;
         }
     }

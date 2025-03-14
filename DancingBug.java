@@ -20,38 +20,37 @@
 import info.gridworld.actor.Bug;
 
 /**
- * A <code>BoxBug</code> traces out a circle  of a given size. <br />
+ * A <code>BoxBug</code> traces out a Dance of a given size. <br />
  * The implementation of this class is testable on the AP CS A and AB exams.
  */
-public class CircleBug extends Bug
+public class DancingBug extends Bug
 {
-    private int steps;
-    private int sideLength;
-
+    private int turn;
+    private int[] turns =
+    { 1, 0, 0, 0, 1, 0, 0, 3, 4,
+     4, 0, 0, 1, 0, 3, 2, 0, 7,
+     0, 0, 0, 3, 2, 1 };
     /**
-     * Constructs a circle bug that traces a circle of a given side length
+     * Constructs a box bug that traces a Dance of a given side length
      * @param length the side length
      */
-    public CircleBug(int length)
+    public DancingBug()
     {
-        steps = 0;
-        sideLength = length;
+        turn = 0;
     }
 
     /**
-     * Moves to the next location of the circle.
+     * Moves to the next location of the Dance.
      */
     public void act()
     {
-        if (steps < sideLength && canMove())
+        if ( true||canMove())
         {
+            for(int i=0;i<turns[turn];i++) turn();
+            turn++;
+            turn=turn%turns.length;
             move();
-            steps++;
         }
-        else
-        {
-            turn();
-            steps = 0;
-        }
+        
     }
 }
