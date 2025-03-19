@@ -6,7 +6,10 @@ import info.gridworld.actor.Actor;
 import info.gridworld.actor.Bug;
 import info.gridworld.actor.Rock;
 import info.gridworld.actor.Flower;
+/*
+    Runner to test jumpers and blossoms
 
+*/
 public class JumperRunner
 {
     public static void main(String[] args)

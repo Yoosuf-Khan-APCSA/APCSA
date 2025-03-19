@@ -15,6 +15,7 @@
  * @author Chris Nevison
  * @author Barbara Cloud Wells
  * @author Yoosuf Khan
+ * @since March 13, 2025
  */
 
 import info.gridworld.grid.Grid;
@@ -28,7 +29,7 @@ import info.gridworld.actor.Flower;
 import java.util.function.Supplier;
 
 /**
- * A <code>BoxBug</code> traces out a circle  of a given size. <br />
+ * A <code>BoxBug</code> Bug that can jump over other actors <br />
  * The implementation of this class is testable on the AP CS A and AB exams.
  */
 public class Jumper extends Bug
@@ -38,8 +39,8 @@ public class Jumper extends Bug
     private int maxJump;
 
     /**
-     * Constructs a circle bug that traces a circle of a given side length
-     * @param length the side length
+     * Constructs a jumper bug that can jump over other actors
+     * @param jumps maximum jumps till random turn
      */
     public Jumper(int jumps)
     {
@@ -47,7 +48,7 @@ public class Jumper extends Bug
     }
 
     /**
-     * Constructs a circle bug that traces a circle of a given side length
+     * Constructs a jumper bug that can jump over other actors
      */
     public Jumper()
     {
@@ -55,7 +56,7 @@ public class Jumper extends Bug
     }
 
     /**
-     * Moves to the next location of the circle.
+     * Moves to the next location .
      */
     public void act()
     {
@@ -82,6 +83,10 @@ public class Jumper extends Bug
             jump=0;
         }
     }
+    /**
+     * checks if bug can jump forward 
+     * @return true if can jump false if can't
+     */
      public boolean hasClearJump(){
         Grid<Actor> grid = getGrid();
         Location newJump = getLocation().getAdjacentLocation(getDirection());
@@ -89,6 +94,10 @@ public class Jumper extends Bug
         if(grid.isValid(newJump)&&((grid.get(newJump)==null|| (grid.get(newJump) instanceof Flower)&&!(grid.get(newJump) instanceof Blossom)))) return true;
         return false;
      }
+     /**
+     * checks if bug can jump in any direction 
+     * @return true if can jump false if can't
+     */
     public boolean canJump(){
         int row =getLocation().getRow();
         int col =getLocation().getCol();
@@ -112,7 +121,7 @@ public class Jumper extends Bug
         return false;
     }
     /**
-     * Moves the bug forward, putting a flower into the location it previously
+     * Moves the bug forward, putting a blossom into the location it previously
      * occupied.
      */
     public void move()
@@ -129,6 +138,9 @@ public class Jumper extends Bug
         Blossom blossom = new Blossom((int)(Math.random()*20));
         blossom.putSelfInGrid(gr, loc);
     }
+    /**
+     * Moves the bug forward 2 spaces
+     */
     public void jump()
     {
         Grid<Actor> gr = getGrid();

@@ -15,6 +15,7 @@
  * @author Chris Nevison
  * @author Barbara Cloud Wells
  * @author Yoosuf Khan
+ * @since March 13, 2025
  */
 
 import info.gridworld.grid.Grid;
@@ -34,8 +35,8 @@ import java.awt.Color;
 public class Blossom extends Flower
 {
     
-    private int life;
-     private int step;
+    private int life;//max steps spent alive
+    private int step;//steps spent alive
 
     /**
      * Constructs a circle bug that traces a circle of a given side length
