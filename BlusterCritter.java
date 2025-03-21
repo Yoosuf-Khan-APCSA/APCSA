@@ -19,6 +19,7 @@ import info.gridworld.actor.Critter;
 import info.gridworld.actor.Rock;
 import info.gridworld.grid.Location;
 import java.util.ArrayList;
+import java.awt.Color;
 
 /**
  * A <code>Critter</code> is an actor that moves through its world, processing
@@ -60,31 +61,31 @@ public class BlusterCritter extends Critter
     public ArrayList<Actor> getActors()
     {
 		boolean isRepeat;
-		ArrayList<Actor> edge1=new Location(getLocation().getRow+1,getLocation().getCol+1);
-		ArrayList<Actor> edge2=new Location(getLocation().getRow-1,getLocation().getCol+1);
-		ArrayList<Actor> edge3=new Location(getLocation().getRow+1,getLocation().getCol-1);
-		ArrayList<Actor> finalArr=new Location(getLocation().getRow-1,getLocation().getCol-1);
+		ArrayList<Actor> edge1=getGrid().getNeighbors(new Location(getLocation().getRow()+1,getLocation().getCol()+1));
+		ArrayList<Actor> edge2=getGrid().getNeighbors(new Location(getLocation().getRow()-1,getLocation().getCol()+1));
+		ArrayList<Actor> edge3=getGrid().getNeighbors(new Location(getLocation().getRow()+1,getLocation().getCol()-1));
+		ArrayList<Actor> finalArr=getGrid().getNeighbors(new Location(getLocation().getRow()-1,getLocation().getCol()-1));
 		for(int i=0; i<edge1.size(); i++){
 			isRepeat=false;
 			for(int j=0; j<finalArr.size(); j++){
-				if(finalArr.get(j).equals(edge1(i))) isRepeat=true;
+				if(finalArr.get(j).equals(edge1.get(i))) isRepeat=true;
 			}
-			if(!isRepeat) finalArr.add(edge1(i));
+			if(!isRepeat) finalArr.add(edge1.get(i));
 		}
 		
 		for(int i=0; i<edge3.size(); i++){
 			isRepeat=false;
 			for(int j=0; j<finalArr.size(); j++){
-				if(finalArr.get(j).equals(edge3(i))) isRepeat=true;
+				if(finalArr.get(j).equals(edge3.get(i))) isRepeat=true;
 			}
-			if(!isRepeat) finalArr.add(edge3(i));
+			if(!isRepeat) finalArr.add(edge3.get(i));
 		}
 		for(int i=0; i<edge2.size(); i++){
 			isRepeat=false;
 			for(int j=0; j<finalArr.size(); j++){
-				if(finalArr.get(j).equals(edge2(i))) isRepeat=true;
+				if(finalArr.get(j).equals(edge2.get(i))) isRepeat=true;
 			}
-			if(!isRepeat) finalArr.add(edge2(i));
+			if(!isRepeat) finalArr.add(edge2.get(i));
 		}
         return finalArr;
     }
@@ -110,9 +111,9 @@ public class BlusterCritter extends Critter
         }
         if(count<CrittersCount){
 			Color c = getColor();
-			int red = (int) (c.getRed() * (1 +.2));
-			int green = (int) (c.getGreen() * (1 + .2));
-			int blue = (int) (c.getBlue() * (1 + .2));
+			int red = (int) (c.getRed() * (1 +.2))%255;
+			int green = (int) (c.getGreen() * (1 + .2))%255;
+			int blue = (int) (c.getBlue() * (1 + .2))%255;
 			setColor(new Color(red, green, blue));
 		}
         else{

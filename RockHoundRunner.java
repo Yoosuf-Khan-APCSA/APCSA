@@ -10,7 +10,7 @@ import java.awt.Color;
 /**
  * This class runs a world that contains <code>RockHound</code> critters. <br />
  */
-public class RockHoundRunner
+public class RockHoundRunner 
 {
     public static void main(String[] args)
     {
