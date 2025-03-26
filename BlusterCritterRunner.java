@@ -4,12 +4,11 @@ import info.gridworld.actor.ActorWorld;
 import info.gridworld.actor.Rock;
 import info.gridworld.grid.BoundedGrid;
 import info.gridworld.grid.Location;
-import info.gridworld.actor.Critter;
 
 /**
  * This class runs a world that contains <code>BlusterCritter</code>. <br />
  */
-public class BlusterCritterRunner 
+public class BlusterCritterRunner
 {
     public static void main(String[] args)
     {
