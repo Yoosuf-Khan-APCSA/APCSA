@@ -146,6 +146,7 @@ public class SinglyLinkedListTester
 	{
 		System.out.println("\n8. Testing isEmpty (and copy constructor) until list is empty");
 		SinglyLinkedList<Coordinate> sll2 = new SinglyLinkedList<Coordinate>(sll);
+		System.out.println("HIIIIII"); 
 		addCoordinates(sll2);
 		if (sll2.size() > 0) {
 			System.out.println("Before:");
