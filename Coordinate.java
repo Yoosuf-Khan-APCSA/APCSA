@@ -1,22 +1,22 @@
 /**
- *	A coordinate on a grid. Integer XY values.
+ *	A coordinate on a grid. Integer Row Col values.
  *
  *	@author Mr Greenstein
  */
 public class Coordinate implements Comparable<Coordinate>
 {
-	private int x, y;
+	private int col, row;
 		
-	public Coordinate(int myX, int myY)
+	public Coordinate(int myRow, int myCol)
 	{
-		x = myX;
-		y = myY;
+		col = myCol;
+		row = myRow;
 	}
 	
 	/* Accessor methods */
-	public int getX() { return x; }
-	public int getY() { return y; }
-	
+	public int getCol() { return col; }
+	public int getRow() { return row; }
+	@Override
 	public boolean equals(Object other)
 	{
 		return compareTo((Coordinate)other) == 0;
@@ -24,22 +24,23 @@ public class Coordinate implements Comparable<Coordinate>
 	
 	/**
 	 *	Coordinate is greater when:
-	 *	1. x is greater or
-	 *	2. x is equal and y is greater
+	 *	1. col is greater or
+	 *	2. col is equal and row is greater
 	 *	3. otherwise Coordinates are equal
 	 *	@return		negative if less than, 0 if equal, positive if greater than
 	 */
+	@Override
 	public int compareTo(Coordinate other) {
 		if (! (other instanceof Coordinate))
 			throw new IllegalArgumentException("compareTo not Coordinate object");
-		if (x > ((Coordinate)other).x || x < ((Coordinate)other).x)
-			return x - ((Coordinate)other).x;
-		if (y > ((Coordinate)other).y || y < ((Coordinate)other).y)
-			return y - ((Coordinate)other).y;
+		if (col > ((Coordinate)other).col || col < ((Coordinate)other).col)
+			return col - ((Coordinate)other).col;
+		if (row > ((Coordinate)other).row || row < ((Coordinate)other).row)
+			return row - ((Coordinate)other).row;
 		return 0;
 	}
 	
 	public String toString()
-	{	return "[ " + x + ", " + y + "]";  }
+	{	return "[ " + row + ", " + col + "]";  }
 	
 }
