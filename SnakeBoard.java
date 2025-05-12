@@ -35,6 +35,9 @@ public class SnakeBoard {
 	
 	/**
 	 *	Print the board to the screen.
+	 * 
+	 * @param snake linked list of coordinates of snake to place on board
+	 * @param target coordinate of target to place on board
 	 */
 	public void printBoard(Snake snake, Coordinate target) {
 		for(int i=0;i<board.length;i++){
@@ -54,6 +57,12 @@ public class SnakeBoard {
 	}
 	
 	/* Helper methods go here	*/
+	/**
+	 *	checks if a given coordinate is empty
+	 * 
+	 * @return if coordinate is empty on board or not
+	 * @param coordinate to check
+	 */
 	public boolean isEmptySlot(Coordinate c){
 		if(c.getRow()<=0||c.getRow()>=board.length-1||c.getCol()<=0||c.getCol()>=board[0].length-1)
 			return false;
@@ -62,18 +71,41 @@ public class SnakeBoard {
 		else return false;
 	} 
 	/*	Accessor methods	*/
+	/** Returns board
+	 * 
+	 * @return board of snake game
+	 */
 	public char[][] getBoard(){
 		return board;
 	}
+	/** Returns height
+	 * 
+	 * @return height of board
+	 */
 	public int getHeight(){
 		return board.length-2;
 	}
+	/** Returns width
+	 * 
+	 * @return width of board
+	 */
 	public int getWidth(){
 		return board[0].length-2;
 	}
+	/** Returns char at given coordinate on board
+	 * 
+	 * @return char on board at (row, col)
+	 * @param row row of char
+	 * @param col column of char
+	 */
 	public char getSlot(int row, int col){
 		return board[row][col];
 	}
+	/** Returns char at given coordinate on board
+	 * 
+	 * @return char on board at coordinate c
+	 * @param c coordinate of char
+	 */
 	public char getSlot(Coordinate c){
 		return board[c.getRow()][c.getCol()];
 	}

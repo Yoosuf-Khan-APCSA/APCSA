@@ -2,8 +2,8 @@
  *	A SinglyLinkedList of Coordinate objects representing
  *	a snake on a two-dimensional grid.
  *
- *	@author	
- *	@since	
+ *	@author	Yoosuf Khan
+ *	@since	May 12, 2025
  */
 public class Snake extends SinglyLinkedList<Coordinate> {
 		
@@ -17,6 +17,11 @@ public class Snake extends SinglyLinkedList<Coordinate> {
 			add(new Coordinate(location.getRow()+i,location.getCol()));
 		}
 	}
+	/** Creates a linked list to represent the snake given a head coordinate
+	 * 
+	 * @param row row of head
+	 * @param col column of head
+	 */
 	public Snake(int row, int col) { 
 		Coordinate location=new Coordinate(row,col);
 		for(int i=0;i<5;i++){

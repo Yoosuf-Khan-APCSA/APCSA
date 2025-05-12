@@ -1,10 +1,11 @@
 import java.io.PrintWriter;
 import java.util.Scanner;
 /**
- *	Snake Game - <Description goes here>
- *	
- *	@author	
- *	@since	
+ *	Snake Game - Runs a varient of the hit game "Snake" 
+ *	Snake moves through board collecting targets to gain length
+ * 	if snake hits walls or itself it dies and the game is over
+ *	@author	Yoosuf Khan
+ *	@since	May 12, 2025
  */
 public class SnakeGame {
 	
@@ -27,6 +28,8 @@ public class SnakeGame {
 		sg.run();
 		
 	}
+	/* Runs the game of snake for the user to play
+	 **/
 	public void run(){
 		printIntroduction();
 		helpMenu();
@@ -35,7 +38,7 @@ public class SnakeGame {
 		Coordinate nextLoc=null;
 		while(input!='q'&&!isGameOver()&&!isInvalidMove){
 			board.printBoard(snake, target);
-			System.out.println("Score "+score);
+			System.out.println("Score: "+score+" (w - North, s - South, d - East, a - West, h - Help) ->");
 			Coordinate head = new Coordinate(snake.get(0).getValue().getRow(),snake.get(0).getValue().getCol());
 			input=Prompt.getChar("Where do you want to move?");
 			if(input=='q'){
@@ -60,8 +63,11 @@ public class SnakeGame {
 				}
 			}
 		}
-
+		if(input!='q') System.out.println("You Lose.");
+		System.out.println("Thanks for playing SnakeGame!!!");
 	}
+	/* creates a new target in an empty board location
+	 **/
 	public void makeTarget(){
 		Coordinate c=new Coordinate((int)(board.getHeight()*Math.random()+1),
 									(int)(board.getWidth()*Math.random()+1));
@@ -71,6 +77,10 @@ public class SnakeGame {
 		}
 		target=c;
 	}
+	/* Tells if a new move can not be made and the game is over
+	 * 
+	 * @return if game is over/ player can no longer move
+	 **/
 	public boolean isGameOver(){
 		Coordinate head=snake.get(0).getValue();
 		if(score>=board.getHeight()*board.getWidth()-10) {
@@ -87,6 +97,8 @@ public class SnakeGame {
 		if(blockedNorth&&blockedSouth&&blockedEast&&blockedWest) return true;
 		return false;
 	}
+	/* Saves the state of the game to a file called gameSave.txt
+	 **/
 	public void Save(){
 		PrintWriter pw = FileUtils.openToWrite("gameSave.txt");
 		pw.println("Score " + score);
@@ -99,6 +111,8 @@ public class SnakeGame {
 		pw.close();
 		System.out.println("\nGame saved to gameSave.txt\n");
 	}
+	/* loads the state of the game from the file called gameSave.txt
+	 **/
 	public void Load(){
 		Scanner scan = FileUtils.openToRead("gameSave.txt");
 		int row,col,size;

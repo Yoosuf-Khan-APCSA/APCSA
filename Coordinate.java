@@ -6,7 +6,7 @@
 public class Coordinate implements Comparable<Coordinate>
 {
 	private int col, row;
-		
+	/*	Constructor	*/	
 	public Coordinate(int myRow, int myCol)
 	{
 		col = myCol;

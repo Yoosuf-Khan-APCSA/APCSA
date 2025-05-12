@@ -1,10 +1,11 @@
 import java.util.NoSuchElementException;
 
 /**
- *	SinglyLinkedList - (description)
+ *	SinglyLinkedList - A list of ListNodes that can be traversed through
+ *  					contains a head and a tail pointer to start traversal
  *
- *	@author	
- *	@since	
+ *	@author	Yoosuf Khan
+ *	@since	May 12, 2025
  */
 public class SinglyLinkedList<E extends Comparable<E>>
 {
