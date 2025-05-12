@@ -207,6 +207,7 @@ public class SinglyLinkedList<E extends Comparable<E>>
 			if(tmp.getValue().equals(object)) return true;
 			tmp = tmp.getNext();
 		}
+		if(tmp.getValue().equals(object)) return true;
 		return false;
 	}
 	

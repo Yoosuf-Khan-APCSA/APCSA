@@ -1,3 +1,5 @@
+import java.io.PrintWriter;
+import java.util.Scanner;
 /**
  *	Snake Game - <Description goes here>
  *	
@@ -12,13 +14,109 @@ public class SnakeGame {
 	private int score;			// the score of the game
 
 	/*	Constructor	*/
-	public SnakeGame() { }
+	public SnakeGame() {
+		snake=new Snake(5,5);
+		board = new SnakeBoard(20,25);
+		score=0;
+		target=new Coordinate(10,10);
+	 }
 	
 	/*	Main method	*/
 	public static void main(String[] args) {
+		SnakeGame sg = new SnakeGame();
+		sg.run();
 		
 	}
-	
+	public void run(){
+		printIntroduction();
+		helpMenu();
+		char input=' ';
+		boolean isInvalidMove=false;
+		Coordinate nextLoc=null;
+		while(input!='q'&&!isGameOver()&&!isInvalidMove){
+			board.printBoard(snake, target);
+			System.out.println("Score "+score);
+			Coordinate head = new Coordinate(snake.get(0).getValue().getRow(),snake.get(0).getValue().getCol());
+			input=Prompt.getChar("Where do you want to move?");
+			if(input=='q'){
+				if(Prompt.getChar("Are you sure? (y or n)")!='y') input=' ';
+			}
+			else if(input=='h') helpMenu();
+			else if(input=='f') Save();
+			else if(input=='r') Load();
+			else if(input=='w'||input=='a'||input=='s'||input=='d'){
+				if(input=='w') nextLoc=new Coordinate(head.getRow()-1,head.getCol());
+				else if(input=='a') nextLoc=new Coordinate(head.getRow(),head.getCol()-1);
+				else if(input=='s') nextLoc=new Coordinate(head.getRow()+1,head.getCol());
+				else if(input=='d') nextLoc=new Coordinate(head.getRow(),head.getCol()+1);
+				if(!board.isEmptySlot(nextLoc)||snake.contains(nextLoc)) isInvalidMove=true;
+				else{
+					snake.add(0, nextLoc);
+					if(!nextLoc.equals(target)) snake.remove(snake.size()-1);
+					else {
+						makeTarget();
+						score++;
+					}
+				}
+			}
+		}
+
+	}
+	public void makeTarget(){
+		Coordinate c=new Coordinate((int)(board.getHeight()*Math.random()+1),
+									(int)(board.getWidth()*Math.random()+1));
+		while(board.getSlot(c.getRow(), c.getCol())!=' '||snake.contains(c)){
+			c=new Coordinate((int)(board.getHeight()*Math.random()+1),
+							(int)(board.getWidth()*Math.random()+1));
+		}
+		target=c;
+	}
+	public boolean isGameOver(){
+		Coordinate head=snake.get(0).getValue();
+		if(score>=board.getHeight()*board.getWidth()-10) {
+			return true;
+		}
+		Coordinate north =new Coordinate(head.getRow()-1,head.getCol());
+		Coordinate south =new Coordinate(head.getRow()+1,head.getCol());
+		Coordinate east =new Coordinate(head.getRow(),head.getCol()+1);
+		Coordinate west =new Coordinate(head.getRow(),head.getCol()-1);
+		boolean blockedNorth=(!board.isEmptySlot(north)||snake.contains(north));
+		boolean blockedSouth=(!board.isEmptySlot(south)||snake.contains(south));
+		boolean blockedEast=(!board.isEmptySlot(east)||snake.contains(east));
+		boolean blockedWest=(!board.isEmptySlot(west)||snake.contains(west));
+		if(blockedNorth&&blockedSouth&&blockedEast&&blockedWest) return true;
+		return false;
+	}
+	public void Save(){
+		PrintWriter pw = FileUtils.openToWrite("gameSave.txt");
+		pw.println("Score " + score);
+		pw.println("Target");
+		pw.println(target.getRow()+" "+target.getCol());
+		pw.println("Snake "+snake.size());
+		for(int i=0; i<snake.size();i++){
+			pw.println(snake.get(i).getValue().getRow()+" "+snake.get(i).getValue().getCol());
+		}
+		pw.close();
+		System.out.println("\nGame saved to gameSave.txt\n");
+	}
+	public void Load(){
+		Scanner scan = FileUtils.openToRead("gameSave.txt");
+		int row,col,size;
+		scan.next();
+		score=scan.nextInt();
+		scan.next();
+		row=scan.nextInt();
+		col=scan.nextInt();
+		target=new Coordinate(row,col);
+		scan.next();
+		size=scan.nextInt();
+		snake.clear();
+		for(int i=0;i<size;i++){
+			row=scan.nextInt();
+			col=scan.nextInt();
+			snake.add(new Coordinate(row,col));
+		}
+	}
 	/**	Print the game introduction	*/
 	public void printIntroduction() {
 		System.out.println("  _________              __            ________");

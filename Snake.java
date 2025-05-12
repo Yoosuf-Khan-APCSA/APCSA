@@ -17,6 +17,12 @@ public class Snake extends SinglyLinkedList<Coordinate> {
 			add(new Coordinate(location.getRow()+i,location.getCol()));
 		}
 	}
+	public Snake(int row, int col) { 
+		Coordinate location=new Coordinate(row,col);
+		for(int i=0;i<5;i++){
+			add(new Coordinate(location.getRow()+i,location.getCol()));
+		}
+	}
 	
 	
 }
