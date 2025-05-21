@@ -55,6 +55,41 @@ public class BinaryTree<E extends Comparable<E>> {
 			}
 		} 
 	}
+		/**	Add a node to the tree
+	 *	@param value		the value to put into the tree
+	 */
+	public E search(E value) {
+		if (root==null){
+			return null;
+		}
+		TreeNode<E> traverse=root;
+		
+		boolean isDone=false;
+		while (!isDone){
+			if(value.compareTo(traverse.getValue())<0){
+				if(traverse.getLeft()==null){
+					isDone=true;
+					return null;
+				}
+				else
+					traverse=traverse.getLeft();
+			}
+			else if(value.compareTo(traverse.getValue())>0){
+				if(traverse.getRight()==null){
+					isDone=true;
+					return null;
+				}
+				else
+					traverse=traverse.getRight();
+			}
+			else{
+				isDone=true;
+				 return traverse.getValue();
+			 }
+			
+		}
+		return null; 
+	}
 	/**	Add a node to the tree
 	 *	@param value		the value to put into the tree
 	 */
@@ -230,7 +265,9 @@ public class BinaryTree<E extends Comparable<E>> {
 	public void printTree() {
 		printLevel(root, 0);
 	}
-	
+	public void clear(){
+		root=null;
+	}
 	/**
 	 *	Recursive node printing method
 	 *	Prints reverse order: right subtree, node, left subtree
@@ -247,6 +284,14 @@ public class BinaryTree<E extends Comparable<E>> {
 		System.out.println(node.getValue());
 		// print left subtree
 		printLevel(node.getLeft(), level + 1);
+	}
+	private void printGivenLevel(TreeNode<E> node, int level) {
+		if(level==0) System.out.print(node.getValue().getName());
+		printlevel(node.getLeft(),level-1);
+		printlevel(node.getRight(),level-1);
+	}
+	private TreeNode<E> getRoot(){
+		return root;
 	}
 	
 	
