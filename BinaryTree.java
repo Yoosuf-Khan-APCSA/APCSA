@@ -5,6 +5,8 @@
  *	@author	
  *	@since	
  */
+import java.util.ArrayList; 
+import org.w3c.dom.Node;
 public class BinaryTree<E extends Comparable<E>> {
 
 	private TreeNode<E> root;		// the root of the tree
@@ -21,68 +23,132 @@ public class BinaryTree<E extends Comparable<E>> {
 	 *	@param value		the value to put into the tree
 	 */
 	public void add(E value) {
+		addIterative(value);
+		//addRecurse(value, root);
+	}
+	/**	Add a node to the tree
+	 *	@param value		the value to put into the tree
+	 */
+	public void addIterative(E value) {
 		if (root==null){
 			root= new TreeNode(value);
 			return;
 		}
-		TreeNode traverse=root;
-		while (traverse.getRight()!=null&&traverse.getLeft()!=null){
-			if(value.compareTo(root.getValue())<0)
-				traverse=traverse.getLeft();
-			else 
-				traverse=traverse.getRight();
+		TreeNode<E> traverse=root;
+		boolean isDone=false;
+		while (!isDone){
+			if(value.compareTo(traverse.getValue())<0){
+				if(traverse.getLeft()==null){
+					traverse.setLeft(new TreeNode(value));
+					isDone=true;
+				}
+				else
+					traverse=traverse.getLeft();
+			}
+			else{
+				if(traverse.getRight()==null){
+					traverse.setRight(new TreeNode(value));
+					isDone=true;
+				}
+				else
+					traverse=traverse.getRight();
+			}
 		} 
-		if(value.compareTo(root.getValue())<0)
-				traverse.setLeft(new TreeNode(value));
-		else 
-			traverse.setRight(new TreeNode(value));
 	}
-	
+	/**	Add a node to the tree
+	 *	@param value		the value to put into the tree
+	 */
+	public void addRecurse(E value, TreeNode<E> traverse) {
+		if (root==null){
+			root= new TreeNode(value);
+			return;
+		}
+		else if(value.compareTo(traverse.getValue())<0){
+				if(traverse.getLeft()==null){
+					traverse.setLeft(new TreeNode(value));
+				}
+				else
+					addRecurse(value,traverse.getLeft());
+			}
+		else{
+				if(traverse.getRight()==null){
+					traverse.setRight(new TreeNode(value));
+				}
+				else
+					addRecurse(value,traverse.getRight());
+		}
+	}
 	/**
 	 *	Print Binary Tree Inorder
 	 */
 	public void printInorder() { 
-		
+		inorderRecurse(root);
 	}
 	
 	public void inorderRecurse(TreeNode node){
 		if(node.getLeft()!=null)
-			inorderRecurse(traverse.getLeft());
+			inorderRecurse(node.getLeft());
 		System.out.print(node.getValue()+" ");
 		if(node.getRight()!=null)
-			inorderRecurse(traverse.getRight());
+			inorderRecurse(node.getRight());
+	}
+	public void preorderRecurse(TreeNode node){
+		System.out.print(node.getValue()+" ");
+		if(node.getLeft()!=null)
+			preorderRecurse(node.getLeft());
+		if(node.getRight()!=null)
+			preorderRecurse(node.getRight());
+	}
+	public void postorderRecurse(TreeNode node){
+		if(node.getLeft()!=null)
+			postorderRecurse(node.getLeft());
+		if(node.getRight()!=null)
+			postorderRecurse(node.getRight());
+		System.out.print(node.getValue()+" ");
 	}
 	/**
 	 *	Print Binary Tree Preorder
 	 */
 	public void printPreorder() {
-		System.out.print(node.getValue()+" ");
-		if(node.getLeft()!=null)
-			inorderRecurse(traverse.getLeft());
-		if(node.getRight()!=null)
-			inorderRecurse(traverse.getRight());
+		preorderRecurse(root);
 	}
 	
 	/**
 	 *	Print Binary Tree Postorder
 	 */
 	public void printPostorder() { 
-		if(node.getLeft()!=null)
-			inorderRecurse(traverse.getLeft());
-		if(node.getRight()!=null)
-			inorderRecurse(traverse.getRight());
-		System.out.print(node.getValue()+" ");
-			}
+		postorderRecurse(root);
+	}
 		
 	/**	Return a balanced version of this binary tree
 	 *	@return		the balanced tree
 	 */
 	public BinaryTree<E> makeBalancedTree() {
 		BinaryTree<E> balancedTree = new BinaryTree<E>();
-
+		ArrayList<E> orderedList = new ArrayList<>();
+		createOrderedList(orderedList, root);
+		balancedTree.root=createBalancedArray(orderedList, 0, orderedList.size()-1);
 		return balancedTree;
 	}
 	
+	public void createOrderedList(ArrayList<E> list, TreeNode<E> node){
+		if(node.getLeft()!=null)
+			createOrderedList(list,node.getLeft());
+		list.add(node.getValue());
+		if(node.getRight()!=null)
+			createOrderedList(list,node.getRight());
+	}
+
+	public TreeNode<E> createBalancedArray(ArrayList<E> list, int start, int end){
+		if(start<=end){
+			int mid =(start+end)/2;
+			TreeNode<E> node = new TreeNode<E>(list.get(mid));
+			node.setLeft(createBalancedArray(list, start, mid-1));
+			node.setRight(createBalancedArray(list, mid+1, end));
+			return node;
+		}
+		return null;
+	}
 	/**
 	 *	Remove value from Binary Tree
 	 *	@param value		the value to remove from the tree
@@ -98,7 +164,40 @@ public class BinaryTree<E extends Comparable<E>> {
 	 *	@return				TreeNode that connects to parent
 	 */
 	public TreeNode<E> remove(TreeNode<E> node, E value) {
-		return null;
+		if(node==null) return null;
+		if(value.compareTo(node.getValue())<0){
+			node.setLeft(remove(node.getLeft(),value));
+		}
+		else if(value.compareTo(node.getValue())>0){
+			node.setRight(remove(node.getRight(),value));
+		}
+		else{
+			if(node.getLeft()==null&&node.getRight()==null){
+				node=null;
+			}
+			else if (node.getRight()==null){
+				System.out.println(node+" "+node.getLeft());
+				node=node.getLeft();
+			}
+			else if (node.getLeft()==null){
+				node=node.getRight();
+			}
+			else{
+				TreeNode<E> smallestNode=node.getRight();;
+				
+				while(smallestNode.getLeft()!=null){
+					smallestNode=smallestNode.getLeft();
+				}
+				remove(smallestNode.getValue());
+				TreeNode<E> nodeLeft=node.getLeft();
+				TreeNode<E> nodeRight=node.getRight();
+				node=new TreeNode<E>(smallestNode.getValue());
+				node.setLeft(nodeLeft);
+				node.setRight(nodeRight);
+				
+			}
+		}
+		return node;
 	}
 	
 
